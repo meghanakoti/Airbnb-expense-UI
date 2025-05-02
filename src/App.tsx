@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Layout from "./components/Layout";
 
-function App() {
+import Dashboard from "./pages/Dashboard";
+import PropertyDashboard from "./pages/PropertyDashboard";
+import PropertiesDetails from "./pages/PropertiesDetails";
+import ExpenseDashboard from "./pages/ExpenseDashboard";
+import MonthlySummaryTable from "./pages/MonthlySummaryTable";
+import BookingDashboard from "./pages/BookingDashboard"; // ✅
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        {/* Default redirect to /dashboard */}
+        <Route index element={<Navigate to="/dashboard" replace />} />
+
+        {/* Dashboard and nested summary route */}
+        <Route path="dashboard">
+          <Route index element={<Dashboard />} />
+          <Route path="summary" element={<MonthlySummaryTable />} />
+        </Route>
+
+        {/* Other standalone routes */}
+        <Route path="properties" element={<PropertyDashboard />} />
+        <Route path="properties/:id" element={<PropertiesDetails />} />
+        <Route path="expenses" element={<ExpenseDashboard />} />
+        <Route path="bookings" element={<BookingDashboard />} /> {/* ✅ NEW */}
+        <Route path="logout" element={<div>Logging out...</div>} />
+      </Route>
+    </Routes>
   );
-}
+};
 
 export default App;
+
+
